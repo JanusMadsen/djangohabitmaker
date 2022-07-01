@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile overview</title>
+    <link rel="icon" href="{% static '/images/logoheader.png' %}">
+    <style>
+        .fullnavbar{
+    width: 100%;
+    background: #913535;
+}
+
+.navbar{
+    width:85%;
+    margin: auto;
+    padding: 35px 0;
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+
+}
+
+.navbar img{
+    height: 9.5%;
+    width: 9.5%;
+}
+
+.navbar ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+
+.navbar ul li a{
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.navbar ul li::after{
+    content: '';
+    height: 3px;
+    width: 0;
+    background: #009688;
+    position: absolute;
+    left: 0;
+    bottom: -10px ;
+    transition: 0.5s;
+}
+
+.navbar ul li:hover::after{
+    width: 100%;
+}
+
+.navbar ul li form input:hover{
+    cursor: pointer;
+}
+
+.maincontent{
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    background: #26282b;
+    margin: auto;
+    padding: 30px 0;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.maincontent form{
+    padding: 10px 30px;
+
+}
+
+.yesbtn{
+    background: #32CD32;
+    height: 45px;
+    width: 100px;
+
+}
+
+.yesbtn:hover{
+    background: #228B22;
+    cursor: pointer;
+
+}
+
+.nobtn{
+    background: #FF0000;
+    height: 45px;
+    width: 100px;
+}
+
+.nobtn:hover{
+    background: #da190b;
+    cursor: pointer;
+}
+
+    </style>
+
+</head>
+<body>
+
+<div class="fullnavbar">
+    <div class="navbar">
+
+        <img src="{% static '/images/logo2.png' %}">
+
+        <ul>
+            <li><a href="/main/">Home</a></li>
+            <li><a href="/profilepage/">Profile</a></li>
+            <li><a href="/profiles/">View all Profiles</a></li>
+
+            <li><form action="/logout/" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Logout">
+            </form></li>
+
+
+
+        </ul>
+    </div>
+</div>
+
+<div class="maincontent">
+
+{% for item in profiles%}
+{% if item.user != request.user %}
+{% if item in following %}
+<form method="post">
+    {% csrf_token %}
+    <input id="userprofile" name="userprofile" value={{item.id}} type="hidden">
+    <input id="following" name="following" value="following" type="hidden">
+    <h1>{{item.user|capfirst}}</h1>
+    <button class="nobtn">Unfollow</button>
+</form>
+{% else %}
+<form method="post">
+    {% csrf_token %}
+    <input id="userprofile" name="userprofile" value={{item.id}} type="hidden">
+    <input id="following" name="following" value="notfollowing" type="hidden">
+    <h1>{{item.user|capfirst}}</h1>
+    <button class="yesbtn"> Follow</button>
+</form>
+{% endif %}
+{% endif %}
+{% endfor %}
+</div>
+</body>
+</html>

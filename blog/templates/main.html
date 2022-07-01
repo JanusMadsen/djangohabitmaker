@@ -1,0 +1,231 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+    <link rel="icon" href="{% static '/images/logoheader.png' %}">
+</head>
+<body>
+<style>
+#dayact{
+  display:block;
+  height: 300px;
+  width: 300px;
+  border-radius: 50%;
+  border: 1px solid white;
+  background-color: {{ user.profile.color }};
+  cursor: pointer;
+  color: #fff;
+  font-size: 30px;
+  }
+
+#profileshow{
+  display:block;
+  height: 75px;
+  width: 75px;
+  border-radius: 50%;
+  border: 1px solid white;
+  background-color: {{ profiles.color }};
+  postition: absolute;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+    }
+
+
+#dayact:hover{
+background: {{ user.profile.hovercolor }};
+}
+
+table, th, td {
+  border:1px solid black;
+  font-size: 30px;
+  color: #fff;
+}
+
+#showbuttons{
+    width: 12%;
+    height: 40px;
+    float: left;
+
+}
+
+
+
+.fullnavbar{
+    width: 100%;
+    background: #913535;
+}
+
+.navbar{
+    width:85%;
+    margin: auto;
+    padding: 35px 0;
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+
+}
+
+.navbar img{
+    height: 9.5%;
+    width: 9.5%;
+}
+
+.navbar ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+
+.navbar ul li a{
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.navbar ul li form input:hover{
+    cursor: pointer;
+}
+
+.navbar ul li::after{
+    content: '';
+    height: 3px;
+    width: 0;
+    background: #009688;
+    position: absolute;
+    left: 0;
+    bottom: -10px ;
+    transition: 0.5s;
+}
+
+.navbar ul li:hover::after{
+    width: 100%;
+}
+
+.fullbody{
+    width: 100%;
+    height: 100%;
+    background: #26282b;
+}
+
+.maincontent table{
+    top: 70%;
+    postition: absolute;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    transform: translateY(25%);
+}
+
+.mainbutton{
+    width: 40%;
+    margin: auto;
+    padding: 80px 0;
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+
+}
+
+.streak{
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+
+.streak img{
+    height: 150px;
+}
+
+.streak h3{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+}
+
+.statusbuttons{
+    padding-left: 3.9%;
+    height: 200px;
+    width: 85%;
+    postition: absolute;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    color: #fff;
+}
+
+
+</style>
+<div class="fullbody">
+<div class="fullnavbar">
+<div class="navbar">
+
+    <img src="{% static '/images/logo2.png' %}">
+
+    <ul>
+        <li><a href="/main/">Home</a></li>
+        <li><a href="/profilepage/">Profile</a></li>
+        <li><a href="/profiles/">View all Profiles</a></li>
+
+        <li><form action="/logout/" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Logout">
+        </form></li>
+
+
+
+    </ul>
+</div>
+</div>
+
+<div class="maincontent">
+
+
+        <table>
+            <tr>
+                {% for item in liste%}
+
+                <td style="background-color: {{item.color}};
+                   width: 150px;
+                   height: 75px;">{{item.day}}</td>
+
+                {% endfor %}
+            </tr>
+        </table>
+
+
+    <div class="mainbutton">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <button id="dayact"> {{ user.profile.habit }} </button>
+        </form>
+
+
+
+        <div class="streak">
+            <img src="{% static '/images/streak.png' %}">
+            <h3>{{streak}}</h3>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="statusbuttons">
+    {% for item in profiles%}
+    <div id="showbuttons">
+        <h1>{{item.user|capfirst}}</h1>
+        <button id="profileshow" style="background-color: {{ item.color }};"></button>
+    </div>
+    {% endfor %}
+</div>
+</div>
+</body>
+</html>

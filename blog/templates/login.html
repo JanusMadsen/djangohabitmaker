@@ -1,0 +1,120 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="icon" href="{% static '/images/logoheader.png' %}">
+</head>
+<body>
+
+<style>
+    .fullnavbar{
+    width: 100%;
+    background: #913535;
+}
+
+.navbar{
+    width:85%;
+    margin: auto;
+    padding: 35px 0;
+    display: flex;
+    align-items:center;
+    justify-content: space-between;
+
+}
+
+.navbar img{
+    height: 9.5%;
+    width: 9.5%;
+}
+
+.navbar ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+
+.navbar ul li a{
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.navbar ul li form{
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.navbar ul li h3{
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.navbar ul li form input.btn:hover{
+    cursor: pointer;
+}
+
+.signup::after{
+    content: '';
+    height: 3px;
+    width: 0;
+    background: #009688;
+    position: absolute;
+    left: 0;
+    bottom: -10px ;
+    transition: 0.5s;
+    text-align: center;
+
+}
+
+.signup:hover::after{
+    width: 65%;
+}
+
+.portrait{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 47%;
+}
+
+.portrait img{
+    width: 100%;
+    height 100vh;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+</style>
+
+<div class="fullnavbar">
+    <div class="navbar">
+
+        <img src="{% static '/images/logo2.png' %}">
+
+        <ul>
+            <li><form action="" method="POST">
+                {% csrf_token %}
+                {{ form }}
+                <input class="btn" type="submit" value="Login">
+            </form>
+            </li>
+            <li><h3>New customer? </h3> <a href="/signup" class="signup">Sign up here</a></li>
+
+
+        </ul>
+    </div>
+</div>
+
+<div class="portrait">
+    <img src="{% static '/images/habit.png' %}">
+
+</div>
+
+</body>
+</html>

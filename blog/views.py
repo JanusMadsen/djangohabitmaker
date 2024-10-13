@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from .models import Profile, Record
 from .functions import checkday, create_record, streakfunc
 from.forms import RegistrationForm, EditForm, EdithabitForm
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -28,6 +32,26 @@ def logoutpage(request):
         logout(request)
         return redirect('/main/')
 
+
+def reset_password_view(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(
+                request=request,
+                use_https=request.is_secure(),
+                email_template_name='password_reset_email.html',
+                subject_template_name='password_reset_subject.txt',
+            )
+            messages.success(request, "We've emailed you instructions for setting your password, "
+                                      "if an account exists with the email you entered. You should receive them shortly."
+                                      " If you don't receive an email, please make sure you've entered the address you "
+                                      "registered with, and check your spam folder.")
+            return redirect(reverse_lazy('password_reset'))
+    else:
+        form = PasswordResetForm()
+    
+    return render(request, 'password_reset.html', {'form': form})
 
 def signuppage(request):
     if request.method == 'POST':

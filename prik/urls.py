@@ -15,13 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from blog.views import signuppage, mainpage, loginpage, indexpage, logoutpage, followerpage, profileeditpage, profilepage, changepasswordpage
+from blog.views import (
+    signuppage, mainpage, loginpage, indexpage, logoutpage, followerpage, 
+    profileeditpage, profilepage, changepasswordpage, reset_password_view
+)
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('password-reset/', reset_password_view, name='password_reset'),
+    path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password_reset_done.html'), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'), name='password_reset_confirm'),
+    path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'), name='password_reset_complete'),
     path('signup/', signuppage),
     path('main/', mainpage),
-    path('login/', loginpage),
+    path('login/', loginpage, name='loginpage'),
     path('', indexpage),
     path('logout/', logoutpage),
     path('profiles/', followerpage),
